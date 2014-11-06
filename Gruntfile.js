@@ -12,22 +12,6 @@ module.exports = function(grunt) {
       }
     },
 
-    stylus: {
-      dist: {
-        options: {
-          linenos: true,
-          compress: false
-        },
-        files: [{
-          expand: true,
-          cwd: 'css/style.styl',
-          src: [ '**/*.styl' ],
-          dest: 'css/style.css',
-          ext: '.css'
-        }]
-      }
-    },
-
     svgmin: {
           dist: {
               files: [{
@@ -49,44 +33,61 @@ module.exports = function(grunt) {
               }],
 
               options: {
-                cssprefix: ".icon-",
-                defaultWidth: '300px',
-                defaultHeight: '300px',
+                cssprefix: ".icon-"
               }
              }
          },
 
-         sprite:{
-               all: {
-                 src: ['i/svg-src/*.png', 'i/svg-src/*.svg']
-                 destImg: 'i/spritesheet.png',
-                 destCSS: 'css/sprites.css'
-               }
-             }
+         svgsprite: {
+            render: {
+              'inline.svg'    : true
+            },
+            your_target: {
+              src : 'i/svg-src-sprite',
+              dest :  'i/svg-dist-sprite'
+            },
+          },
+
+          svgstore: {
+              options: {
+                    prefix : 'icon-', 
+                    includedemo : true,
+                    svg: { 
+                      viewBox : '0 0 100 100',
+                      xmlns: 'http://www.w3.org/2000/svg'
+                    }
+                  },
+
+              default : {
+                files: {
+                  'i/svg-dist-store/icon.svg': ['i/svg-src-store/*.svg'],
+                },
+              },
+            },
 
   });
 
+  // loadNpmTasks
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Grunticon
   grunt.loadNpmTasks ('grunt-grunticon');
   grunt.loadNpmTasks ('grunt-svgmin');
 
-  //stylus
-  grunt.loadNpmTasks('grunt-contrib-stylus');
+  // grunt-svg-sprite
+  grunt.loadNpmTasks('grunt-svg-sprite');
 
-  //spritesmith
-  grunt.loadNpmTasks('grunt-spritesmith');
+  // grunt svg-store
+  grunt.loadNpmTasks('grunt-svgstore');
 
-
+  // registerTask
   grunt.registerTask('default', ['uglify']);
 
-  grunt.registerTask('grunticon', ['uglify', 'grunticon:myIcons', 'svgmin:dist']);
+  grunt.registerTask('icon', ['uglify', 'grunticon:myIcons', 'svgmin:dist']);
 
-  grunt.registerTask('stylus', ['uglify', 'stylus:dist']);
+  grunt.registerTask('sprite', ['uglify', 'svgsprite']);
 
-  grunt.registerTask('spritesmith', ['uglify', 'spritesmith']);
+  grunt.registerTask('store', ['uglify', 'svgmin', 'svgstore']);  
 
 };
