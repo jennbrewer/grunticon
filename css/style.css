@@ -14,3 +14,8 @@ div[class^="svg-"] {
   fill: #191970;
 }
 
+svg{
+ width:50px;
+ height:50px;
+ fill:black;
+}
