@@ -24,23 +24,35 @@ module.exports = function(grunt) {
      },
 
      grunticon: {
-         myIcons: {
+         svg: {
              files: [{
                  expand: true,
-                 cwd: 'i/svg-src',
-                 src: ['*.svg', '*.png'],
-                 dest: 'i/svg-dist'
+                 cwd: 'i/svg/svg-src',
+                 src: ['*.svg'],
+                 dest: 'i/svg/svg-dist'
               }],
 
               options: {
-                cssprefix: ".icon-"
+                cssprefix: ".svg-"
               }
-             }
+             },
+           png: {
+               files: [{
+                   expand: true,
+                   cwd: 'i/png/png-src',
+                   src: ['*.png'],
+                   dest: 'i//png/png-dist'
+                }],
+
+                options: {
+                  cssprefix: ".png-"
+                }
+              }
          },
 
          svgsprite: {
             render: {
-              'inline.svg'    : true
+              //
             },
             your_target: {
               src : 'i/svg-src-sprite',
@@ -84,7 +96,7 @@ module.exports = function(grunt) {
   // registerTask
   grunt.registerTask('default', ['uglify']);
 
-  grunt.registerTask('icon', ['uglify', 'grunticon:myIcons', 'svgmin:dist']);
+  grunt.registerTask('icons', ['uglify', 'grunticon:svg', 'grunticon:png', 'svgmin:dist']);
 
   grunt.registerTask('sprite', ['uglify', 'svgsprite']);
 
